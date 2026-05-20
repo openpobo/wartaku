@@ -1,0 +1,39 @@
+from "astro:content";
+import AmpLayout from "../../../../layouts/AmpLayout.astro";
+export async function getStaticPaths() {
+const posts = await getCollection("blog");
+return posts.map((post) => ({
+params: {
+slug: post.slug
+},
+props: {
+post
+}
+}));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+const canonical =
+new URL(`/blog/${post.slug}/`, Astro.site);
+---
+<AmpLayout
+title={post.data.title}
+description={post.data.description}
+2
+canonical={canonical}
+slug={post.slug}
+>
+<article class="post">
+<h1>
+{post.data.title}
+</h1>
+{
+post.data.pubDate && (
+<p class="date">
+{new Date(post.data.pubDate).toLocaleDateString("id-ID")}
+</p>
+)
+}
+<Content />
+</article>
+</AmpLayout>
