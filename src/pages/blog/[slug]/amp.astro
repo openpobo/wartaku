@@ -17,7 +17,33 @@ export async function getStaticPaths() {
     }));
 }
 
+/* ambil props */
+
 const { post } = Astro.props;
+
+/* ambil isi markdown */
+
+let content = post.body;
+
+/* convert img -> amp-img */
+
+content = content.replace(
+  /<img([^>]*?)src="([^"]+)"([^>]*?)alt="([^"]*?)"([^>]*?)>/gi,
+  `
+  <amp-img
+    src="$2"
+    alt="$4"
+    width="1200"
+    height="630"
+    layout="responsive">
+  </amp-img>
+  `
+);
+
+/* canonical */
+
+const canonical =
+  new URL(`/blog/${post.slug}`, Astro.site);
 ---
 
 <!doctype html>
