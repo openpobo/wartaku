@@ -1,12 +1,33 @@
 ---
-import MainLayout from '../layouts/MainLayout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import Sidebar from '../components/Sidebar.astro';
-import NewsCard from '../components/NewsCard.astro';
-import { posts } from '../content/posts';
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import { SITE } from "../lib/site";
+import { getCollection } from "astro:content";
 
-const hero = posts[0];
+const modules = Object.entries(
+  import.meta.glob('./tools/**/*.astro', { eager: true })
+);
+
+const tools = modules
+  .map(([file, mod]) => {
+    if (!mod.meta) return null;
+
+    const url = file
+      .replace('/src/pages', '')
+      .replace('.astro', '');
+
+    return { url, ...mod.meta };
+  })
+  .filter(Boolean);
+
+const featuredTools = tools.filter(t => t.featured).slice(0, 8);
+
+const allPosts = await getCollection("blog");
+const totalPosts = allPosts.length;
+
+const posts = allPosts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 4);
 ---
 
 <MainLayout title="Cadobongda - Portal Berita Modern">
