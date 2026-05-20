@@ -1,0 +1,56 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Sidebar from '../components/Sidebar.astro';
+import NewsCard from '../components/NewsCard.astro';
+import { posts } from '../content/posts';
+
+const hero = posts[0];
+---
+
+<MainLayout title="Cadobongda - Portal Berita Modern">
+<Header />
+
+<main class="container">
+
+<div class="breaking">
+BREAKING NEWS • AI Search Engine Mengubah Industri SEO • Crypto Market Volatility • Cloud Gaming Trending
+</div>
+
+<div class="layout-grid">
+
+<section>
+
+<article class="card">
+<img src={hero.image} alt={hero.title} />
+
+<div class="content">
+<div style="display:inline-block;background:#ff2d2d22;color:#ff2d2d;padding:6px 12px;border-radius:999px;">
+{hero.category}
+</div>
+
+<h1 class="hero-title">{hero.title}</h1>
+
+<p>
+Portal berita modern ultra SEO dengan performa cepat dan UX desktop ala portal profesional.
+</p>
+</div>
+</article>
+
+<div class="news-grid">
+{posts.map(post => (
+<NewsCard post={post} />
+))}
+</div>
+
+</section>
+
+<Sidebar />
+
+</div>
+
+</main>
+
+<Footer />
+</MainLayout>

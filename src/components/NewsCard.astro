@@ -1,0 +1,27 @@
+---
+const { post } = Astro.props;
+---
+
+<article class="card">
+
+<a href={`/artikel/${post.slug}/`}>
+<img src={post.image} alt={post.title} loading="lazy" />
+</a>
+
+<div class="content">
+
+<div style="display:inline-block;background:#ff2d2d22;color:#ff2d2d;padding:6px 12px;border-radius:999px;">
+{post.category}
+</div>
+
+<h2 class="news-title">
+<a href={`/artikel/${post.slug}/`}>
+{post.title}
+</a>
+</h2>
+
+<p>{post.excerpt}</p>
+
+</div>
+
+</article>
