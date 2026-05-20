@@ -1,0 +1,565 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import { getCollection } from "astro:content";
+
+const modules = Object.entries(
+  import.meta.glob('./tools/**/*.astro', { eager: true })
+);
+
+const tools = modules
+  .map(([file, mod]) => {
+    if (!mod.meta) return null;
+
+    const url = file
+      .replace('/src/pages', '')
+      .replace('.astro', '');
+
+    return { url, ...mod.meta };
+  })
+  .filter(Boolean);
+
+const featuredTools = tools.filter(t => t.featured).slice(0, 8);
+
+const allPosts = await getCollection("blog");
+const totalPosts = allPosts.length;
+
+const posts = allPosts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 4);
+---
+
+<MainLayout pageCSS={["tools"]}>
+
+<div class="home-container">
+
+  <!-- HERO -->
+  <section class="tools-hero">
+    <h1>AI Mr Ferdy: Platform Tools AI Gratis, Review & Fungsi Lengkap</h1>
+
+   <p class="seo-intro">
+Platform tools AI gratis ini menyediakan berbagai fitur seperti generator, converter, dan utility online untuk membantu produktivitas digital tanpa instalasi.
+</p>
+
+<div class="btn-group">
+  <a href="https://server1.mrferdy.workers.dev" class="btn btn-primary">🚀 Mulai Tools</a>
+  <a href="/blog" class="btn btn-secondary">📚 Baca Blog</a>
+</div>
+
+  </section>
+
+
+
+
+<section class="seo-entity">
+
+
+
+<h2 class="seo-heading">
+    AI Mr Ferdy: Review, Keamanan, dan Fungsi Platform AI
+  </h2>
+  
+<p class="seo-lead">
+AI Mr Ferdy adalah platform AI yang banyak dicari di Indonesia untuk kebutuhan 
+konten, SEO, dan tools online gratis. Platform ini sering dibahas dalam konteks 
+keamanan, fitur, dan apakah benar bisa digunakan untuk secara online. Platform ini juga sering dicari dengan keyword seperti AI Mr Ferdy review, 
+AI Mr Ferdy aman digunakan, serta fungsi tools AI yang tersedia.
+</p>
+<p class="seo-linking">
+Pelajari lebih lanjut melalui <a href="/blog/ai-mr-ferdy-digital/">review lengkap AI Mr Ferdy</a> 
+atau langsung coba berbagai <a href="/tools">tools AI gratis</a> yang tersedia.
+</p>
+
+  <div class="seo-box">
+    <h2 class="seo-heading">🚀 Tentang AI Mr Ferdy</h2>
+    <p>
+      AI Mr Ferdy adalah platform tools berbasis Artificial Intelligence (AI) 
+      yang menyediakan berbagai utility online gratis seperti generator, converter, 
+      dan tools produktivitas digital tanpa instalasi.
+    </p>
+  </div>
+
+  <div class="seo-grid">
+    <div class="seo-card">
+      <h3>🔍 Fakta AI Mr Ferdy</h3>
+      <p>
+        Platform ini digunakan untuk membantu pembuatan konten, ide digital, 
+        serta berbagai kebutuhan online secara cepat dan efisien langsung dari browser.
+      </p>
+    </div>
+
+    <div class="seo-card">
+  <h3>💡 Tentang Platform</h3>
+  <p>
+    Platform AI Mr Ferdy menghadirkan kumpulan tools berbasis web yang dirancang 
+    untuk mempermudah berbagai aktivitas digital secara cepat, ringan, dan dapat 
+    diakses langsung melalui browser.
+  </p>
+</div>
+
+    <div class="seo-card">
+      <h3>🔐 Keamanan Penggunaan</h3>
+      <p>
+        AI Mr Ferdy aman digunakan selama tidak memasukkan data sensitif. 
+        Sebagian besar tools berjalan langsung di browser tanpa penyimpanan data.
+      </p>
+    </div>
+
+    <div class="seo-card">
+      <h3>⚡ Fungsi Utama</h3>
+      <ul>
+        <li>AI Prompt Generator</li>
+        <li>QR Code Generator</li>
+        <li>Converter Online</li>
+        <li>AI Rewrite & Konten</li>
+      </ul>
+    </div>
+
+  </div>
+
+
+<div class="seo-extra">
+  <h3>Jenis Tools AI yang Tersedia</h3>
+  <p>
+    Platform ini menyediakan berbagai kategori tools seperti AI content generator,
+    QR code generator, converter file, hingga tools untuk SEO dan optimasi digital. Pelajari lebih lanjut melalui artikel 
+<a href="/blog/ai-mr-ferdy-digital/">review lengkap platform ini</a>
+atau langsung coba <a href="/tools">tools AI gratis</a>.
+  </p>
+</div>
+
+
+
+<div class="seo-faq">
+
+  <h3>FAQ AI Mr Ferdy</h3>
+
+  <p><strong>Apa itu AI Mr Ferdy?</strong><br>
+  Platform tools AI untuk konten dan produktivitas digital.</p>
+
+  <p><strong>Apakah AI Mr Ferdy aman?</strong><br>
+  Aman digunakan selama tidak memasukkan data sensitif.</p>
+
+  <p><strong>Apakah AI Mr Ferdy aman digunakan?</strong><br>
+  Tidak ada bukti scam, namun tetap gunakan dengan bijak.</p>
+
+</div>
+
+<div class="seo-extra">
+  <h3>Kenapa AI Mr Ferdy Banyak Dicari?</h3>
+  <p>
+    Popularitas AI Mr Ferdy meningkat karena banyak pengguna mencari tools AI gratis 
+    untuk konten, SEO, dan produktivitas digital tanpa perlu instalasi atau biaya.
+  </p>
+</div>
+
+<div class="seo-tags">
+  <span>AI tools gratis</span>
+  <span>AI untuk SEO</span>
+  <span>AI content generator</span>
+  <span>tools online tanpa install</span>
+</div>
+</section>
+
+<div class="btn-group">
+  <a href="/tools" class="btn btn-secondary">Tools AI Gratis</a>
+  <a href="/blog" class="btn btn-secondary">Artikel AI & SEO</a>
+  <a href="/blog/ai-mr-ferdy-digital/" class="btn btn-secondary">Review AI Mr Ferdy</a>
+</div>
+
+
+  <!-- STATS -->
+  <section class="tools-stats">
+    <div><strong>{tools.length}+</strong><span>Tools</span></div>
+    <div><strong>{totalPosts}+</strong><span>Artikel</span></div>
+    <div><strong>100%</strong><span>Gratis</span></div>
+  </section>
+
+  <!-- FEATURED TOOLS -->
+  <section>
+    <div class="section-head">
+      <h2>🔥 Popular Tools</h2>
+      <a href="/tools">Lihat semua →</a>
+    </div>
+
+    <div class="tools-grid">
+      {featuredTools.map(tool => (
+        <a href={tool.url} class="tool-card">
+          <div class="badge">HOT</div>
+          <h3>{tool.title}</h3>
+          <p>{tool.description}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- BLOG -->
+  <section>
+    <div class="section-head">
+      <h2>📚 Artikel Terbaru</h2>
+      <a href="/blog">Lihat semua →</a>
+    </div>
+
+    <ul class="blog-list">
+      {posts.map(post => (
+        <li>
+          <a href={`/blog/${post.id}/`}>
+            <div class="thumb">
+              <img src={post.data.heroImage} alt={post.data.title} />
+            </div>
+
+            <div>
+              <h3 class="title">{post.data.title}</h3>
+              <p class="date">
+                {new Date(post.data.pubDate).toLocaleDateString()}
+              </p>
+              <p class="desc">
+                {post.data.description?.slice(0, 100)}...
+              </p>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- CTA -->
+  <section class="tools-hero">
+    <h2>Mulai Gunakan Tools Sekarang</h2>
+    <a href="/tools" class="btn-primary">Lihat Semua Tools 🚀</a>
+  </section>
+
+</div>
+
+
+<style is:global>
+:root{
+  --shadow:0 10px 30px rgba(0,0,0,.12);
+  --radius:24px;
+  --gradient:linear-gradient(90deg,#ffffff,#dbeafe);
+}
+
+html.light-mode{
+  --shadow:0 10px 30px rgba(0,0,0,.06);
+  --gradient:linear-gradient(90deg,#0f172a,#2563eb);
+}
+
+
+.home-container{
+  max-width:1180px;
+  margin:auto;
+  padding:30px 20px 80px;
+}
+
+/* HERO */
+.tools-hero{
+  position:relative;
+  overflow:hidden;
+
+  padding:80px 40px;
+  border-radius:30px;
+
+  background:
+    radial-gradient(circle at top left, rgba(34,197,94,.12), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(34,197,94,.08), transparent 35%),
+    var(--card);
+
+  border:1px solid var(--border);
+
+  text-align:center;
+  margin-bottom:35px;
+
+  box-shadow:var(--shadow);
+}
+
+.tools-hero h1{
+  font-size:clamp(2rem,5vw,3.4rem);
+  line-height:1.1;
+  margin-bottom:20px;
+  font-weight:800;
+  letter-spacing:-1px;
+
+  background:var(--gradient);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.seo-intro{
+  max-width:760px;
+  margin:auto;
+  font-size:1.05rem;
+  line-height:1.8;
+  color:var(--muted);
+}
+
+/* BUTTON */
+.btn{
+  min-width:220px;
+  height:56px;
+
+  border-radius:16px;
+  font-weight:700;
+  font-size:15px;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+
+  text-decoration:none;
+  transition:.3s ease;
+}
+
+.btn-primary{
+  background:var(--accent);
+  color:#fff;
+  box-shadow:0 10px 25px rgba(0,0,0,.18);
+}
+
+.btn-primary:hover{
+  transform:translateY(-3px);
+}
+
+.btn-secondary{
+  background:var(--cardlink);
+  color:var(--text);
+  border:1px solid var(--border);
+}
+
+.btn-secondary:hover{
+  border-color:var(--accent);
+  transform:translateY(-3px);
+}
+
+/* STATS */
+.tools-stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  margin:35px 0 50px;
+}
+
+.tools-stats div{
+  background:var(--card);
+  border:1px solid var(--border);
+
+  border-radius:20px;
+  padding:28px 20px;
+
+  text-align:center;
+
+  transition:.3s ease;
+
+  box-shadow:var(--shadow);
+}
+
+.tools-stats div:hover{
+  transform:translateY(-5px);
+}
+
+.tools-stats strong{
+  display:block;
+  font-size:2rem;
+  margin-bottom:8px;
+  color:var(--accent);
+}
+
+.tools-stats span{
+  color:var(--muted);
+  font-size:.9rem;
+}
+
+
+
+
+
+
+
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px
+}
+
+.section-head h2{
+  font-size:1.4rem;
+  margin:0;
+  display:flex;
+  align-items:center;
+  gap:6px
+}
+
+.section-head a{
+  font-size:13px;
+  color:var(--muted);
+  transition:.2s
+}
+
+/* GRID */
+.blog-list{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  padding:0;
+  list-style:none;
+}
+
+/* CARD */
+.blog-list li{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:12px;
+  transition:.25s;
+}
+
+.blog-list li:hover{
+  transform:translateY(-4px);
+  border-color:var(--accent);
+  box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+
+.blog-list a{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  height:100%;
+}
+
+/* IMAGE */
+.thumb img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+  border-radius:8px;
+}
+
+/* TEXT */
+.blog-list .title{
+  font-size:.95rem;
+  margin-bottom:4px;
+}
+
+.blog-list .desc{
+  font-size:.8rem;
+  color:var(--muted);
+}
+
+.blog-list .date{
+  font-size:.75rem;
+  color:var(--muted);
+}
+
+/* HOVER */
+.blog-list li:hover .title,
+.section-head a:hover{
+  color:var(--accent)
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .blog-list{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:480px){
+  .blog-list{
+    grid-template-columns:1fr;
+  }
+}
+
+
+
+
+.seo-box{
+  background:var(--card);
+  border:1px solid var(--border);
+  padding:20px;
+  border-radius:16px;
+  margin-bottom:20px;
+}
+
+.seo-box h2{
+  font-size:1.3rem;
+  margin-bottom:10px;
+}
+
+.seo-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
+
+.seo-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px;
+  transition:.25s;
+}
+
+.seo-card:hover{
+  border-color:var(--accent);
+  transform:translateY(-3px);
+}
+
+.seo-card h3{
+  font-size:1rem;
+  margin-bottom:8px;
+}
+
+.seo-card p,
+.seo-card li{
+  font-size:.85rem;
+  color:var(--muted);
+}
+
+.seo-card ul{
+  padding-left:16px;
+}
+
+@media(max-width:768px){
+  .seo-grid{
+    grid-template-columns:1fr;
+  }
+}
+.seo-faq{
+  margin-top:25px;
+  padding:18px;
+  border:1px dashed var(--border);
+  border-radius:14px;
+}
+
+.seo-faq h3{
+  font-size:1rem;
+  margin-bottom:10px;
+}
+.seo-heading{
+  font-size:1.2rem;
+  margin:10px 0 10px;
+}
+.seo-entity{
+  margin-top:40px;
+  padding:25px;
+  background:linear-gradient(180deg, transparent, rgba(255,255,255,0.02));
+  border-radius:18px;
+}
+.seo-tags{
+  margin-top:15px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.seo-tags span{
+  font-size:.75rem;
+  padding:6px 10px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  color:var(--muted);
+}
+
+</style>
+</MainLayout>

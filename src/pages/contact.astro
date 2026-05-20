@@ -1,0 +1,133 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+---
+
+<MainLayout 
+  title="Kontak AI Mr Ferdy"
+  description="Hubungi AI Mr Ferdy untuk pertanyaan, saran, atau kerja sama terkait platform tools online dan AI."
+  url="https://aimrferdy.net/contact"
+>
+
+
+
+<div class="container contact-page">
+
+<h1>Kontak</h1>
+
+<p>Kami terbuka untuk pertanyaan, saran, maupun kerja sama. Jika kamu ingin menghubungi <strong>AI Mr Ferdy</strong>, silakan gunakan salah satu cara berikut.</p>
+
+<h2>Hubungi Kami</h2>
+
+<p>Kamu dapat mengirimkan pesan melalui email atau menggunakan formulir sederhana di bawah ini.</p>
+
+<!-- FORM SIMPLE -->
+<form class="contact-form" onsubmit="sendMessage(event)">
+
+<input type="text" id="name" placeholder="Nama" required>
+<input type="email" id="email" placeholder="Email" required>
+<textarea id="message" placeholder="Tulis pesan kamu..." required></textarea>
+
+<button type="submit">Kirim Pesan</button>
+
+</form>
+
+<p class="contact-note">* Form ini akan membuka email client kamu untuk mengirim pesan.</p>
+
+<h2>Alternatif Kontak</h2>
+
+<ul>
+<li>Email: <a href="mailto:aimrferdy.net@email.com">aimrferdy.net@email.com</a></li>
+<li>Website: <a href="/">aimrferdy.net</a></li>
+</ul>
+
+<h2>Tujuan Halaman Ini</h2>
+
+<p>Halaman kontak ini dibuat untuk memudahkan komunikasi antara pengguna dan pengelola website, serta memastikan transparansi dan kepercayaan dalam penggunaan platform.</p>
+
+</div>
+
+
+
+<script>
+window.sendMessage = function(e){
+  e.preventDefault();
+
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const msg = document.getElementById("message").value;
+
+  const subject = encodeURIComponent("Pesan dari " + name);
+  const body = encodeURIComponent(
+    "Nama: " + name + "\\n" +
+    "Email: " + email + "\\n\\n" +
+    msg
+  );
+
+  window.location.href = `mailto:aimrferdy.net@email.com?subject=${subject}&body=${body}`;
+}
+</script>
+
+<style>
+.contact-page {
+  max-width:800px;
+  margin:auto;
+  padding:20px;
+}
+
+.contact-page h1 {
+  margin-bottom:10px;
+}
+
+.contact-page h2 {
+  margin-top:25px;
+  margin-bottom:10px;
+}
+
+.contact-page p {
+  margin-bottom:10px;
+  line-height:1.6;
+}
+
+.contact-form {
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:10px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding:12px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--text);
+}
+
+.contact-form textarea {
+  min-height:120px;
+}
+
+.contact-form button {
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  background:var(--accent);
+  color:#fff;
+  cursor:pointer;
+}
+
+.contact-note {
+  font-size:13px;
+  color:var(--muted);
+}
+
+.contact-page ul {
+  padding-left:20px;
+}
+
+.contact-page li {
+  margin-bottom:6px;
+}
+</style>
+</MainLayout>

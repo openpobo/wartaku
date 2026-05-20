@@ -1,0 +1,175 @@
+---
+const {
+  title = "AI Mr Ferdy – Platform Tools AI & Online Gratis",
+  description = "AI Mr Ferdy adalah platform kumpulan tools AI dan utility online gratis seperti QR generator, converter, dan tools produktivitas lainnya."
+} = Astro.props;
+
+// ✅ FIX wajib (biar ga error di 404 / build)
+const currentUrl = Astro.url?.href || "https://aimrferdy.net";
+const path = Astro.url?.pathname || "/";
+
+// COMPONENT
+import Footer from "../components/Footer.astro";
+import RelatedTools from "../components/RelatedTools.astro";
+
+// DETECT TOOL PAGE
+const segments = path.split("/").filter(Boolean);
+const isToolPage =
+  segments[0] === "tools" &&
+  segments.length >= 3;
+
+// ======================
+// 🔥 AUTO SCHEMA (ALL PAGE)
+// ======================
+let schema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: title,
+  description: description,
+  url: currentUrl
+};
+
+// homepage → WebSite
+if (path === "/") {
+  schema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "AI Mr Ferdy",
+    url: currentUrl
+  };
+}
+
+// blog → BlogPosting
+else if (path.startsWith("/blog")) {
+  schema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: title,
+    description: description,
+    url: currentUrl,
+    author: {
+      "@type": "Person",
+      name: "AI Mr Ferdy"
+    }
+  };
+}
+
+// tools → SoftwareApplication
+else if (path.startsWith("/tools")) {
+  schema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: title,
+    description: description,
+    url: currentUrl,
+    applicationCategory: "Utility",
+    operatingSystem: "All"
+  };
+}
+---
+
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <meta name="description" content={description} />
+
+  <link rel="canonical" href={currentUrl} />
+
+  <!-- OG -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={currentUrl} />
+
+  <!-- TWITTER -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <link href='/fav.png' rel='icon' type='image/x-icon'/>
+  
+  <!-- JSON-LD -->
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(schema).replace(/</g, '\\u003c')}
+/>
+
+  <link rel="stylesheet" href="/styles/global.css">
+
+{Astro.props.pageCSS?.map((css) => (
+  <link rel="stylesheet" href={`/styles/${css}.css`}>
+))}
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="menu-btn" onclick="toggleMenu()">☰</div>
+
+  <div class="logo">
+    <img src="/fav.png" alt="AI Mr Ferdy">
+  </div>
+
+  <nav id="navMenu">
+    <div class="close-btn" onclick="toggleMenu()">✕ Tutup</div>
+    <a href="/">Home</a>
+    <a href="/tools">Tools</a>
+    <a href="/blog">Blog</a>
+    <a href="/about">Tentang</a>
+  </nav>
+
+  <div class="toggle" onclick="toggleMode()" id="modeIcon">🌙</div>
+</header>
+
+<!-- CONTENT -->
+<main class="container">
+  <slot />
+{isToolPage && <RelatedTools />}
+</main>
+
+<!-- FOOTER -->
+<footer>
+<Footer />
+
+
+</footer>
+
+<!-- SCRIPT -->
+<script>
+window.toggleMenu = function () {
+  document.getElementById("navMenu").classList.toggle("active");
+};
+
+window.toggleMode = function () {
+  const html = document.documentElement;
+  html.classList.toggle("light-mode");
+
+  const icon = document.getElementById("modeIcon");
+
+  if (html.classList.contains("light-mode")) {
+    localStorage.setItem("theme", "light");
+    if (icon) icon.textContent = "☀️";
+  } else {
+    localStorage.setItem("theme", "dark");
+    if (icon) icon.textContent = "🌙";
+  }
+};
+
+window.addEventListener("DOMContentLoaded", () => {
+  const theme = localStorage.getItem("theme");
+  const icon = document.getElementById("modeIcon");
+
+  if (theme === "light") {
+    document.documentElement.classList.add("light-mode");
+    if (icon) icon.textContent = "☀️";
+  }
+});
+</script>
+
+</body>
+</html>

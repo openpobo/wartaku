@@ -1,0 +1,24 @@
+{
+  "name": "index",
+  "description": "Build a personal website, blog, or portfolio with Astro.",
+  "dependencies": {
+    "@astrojs/mdx": "4.3.13",
+    "@astrojs/rss": "4.0.14",
+    "@astrojs/sitemap": "3.6.1",
+    "astro": "5.16.9",
+    "typescript": "5.9.3"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=20"
+  },
+  "private": true,
+  "scripts": {
+    "astro": "astro",
+    "build": "astro build",
+    "check": "astro build && tsc && wrangler deploy --dry-run",
+    "dev": "astro dev",
+    "preview": "astro preview"
+  },
+  "type": "module"
+}

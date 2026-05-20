@@ -1,0 +1,31 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+
+const { title, description, pubDate, heroImage } = Astro.props;
+---
+
+<MainLayout
+  title={title}
+  description={description}
+>
+
+<article class="container" style="max-width:800px; margin:auto;">
+
+  <h1>{title}</h1>
+
+  <p style="color:gray;">
+    <FormattedDate date={pubDate} />
+  </p>
+
+  {heroImage && (
+    <img src={heroImage} alt={title} style="width:100%; border-radius:10px;" />
+  )}
+
+  <div style="margin-top:20px;">
+    <slot />
+  </div>
+
+</article>
+
+</MainLayout>

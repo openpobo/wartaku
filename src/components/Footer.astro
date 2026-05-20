@@ -1,0 +1,120 @@
+---
+import { getCollection } from "astro:content";
+
+// ======================
+// 🔥 TOOLS (AUTO - FIX URL)
+// ======================
+const modules = Object.entries(
+  import.meta.glob('/src/pages/tools/**/*.astro', { eager: true })
+);
+
+const tools = modules
+  .map(([file, mod]) => {
+    if (!mod.meta) return null;
+
+    const url = file
+      .replace('/src/pages', '')
+      .replace(/\.astro$/, '')
+      .replace(/\/index$/, '');
+
+    return {
+      url,
+      title: mod.meta.title,
+      category: mod.meta.category,
+      featured: mod.meta.featured
+    };
+  })
+  .filter(Boolean);
+
+// 🔥 Trending (max 5)
+let trending = tools
+  .filter(t => t.featured)
+  .slice(0, 5);
+
+// fallback kalau kosong
+if (trending.length === 0) {
+  trending = tools.slice(0, 5);
+}
+
+// ======================
+// 📂 CATEGORY (top 5)
+// ======================
+const categoryMap = {};
+
+tools.forEach(t => {
+  const cat = t.category || "Other";
+  if (!categoryMap[cat]) categoryMap[cat] = 0;
+  categoryMap[cat]++;
+});
+
+const categories = Object.entries(categoryMap)
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 6);
+
+// ======================
+// 🆕 BLOG TERBARU (max 5)
+// ======================
+const posts = await getCollection("blog");
+
+const latestPosts = posts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 5);
+---
+
+<footer>
+  <div class="footer-container">
+
+    <div class="footer-grid">
+
+      <!-- 🔥 TRENDING TOOLS -->
+      <div>
+        <div class="footer-title">🔥 Popular Tools</div>
+        {trending.map(t => (
+          <a href={t.url}>{t.title}</a>
+        ))}
+        <a href="/tools" class="footer-more">Lihat semua →</a>
+      </div>
+
+      <!-- 📂 CATEGORY -->
+      <div>
+        <div class="footer-title">📂 Categories Tools</div>
+        {categories.map(([cat, count]) => (
+          <a href={`/tools/${cat.toLowerCase()}`}>
+            {cat} ({count})
+          </a>
+        ))}
+      </div>
+
+      <!-- 🆕 BLOG -->
+      <div>
+        <div class="footer-title">🆕 Artikel Terbaru</div>
+        {latestPosts.map(post => (
+          <a href={`/blog/${post.id}/`}>
+            {post.data.title}
+          </a>
+        ))}
+        <a href="/blog" class="footer-more">Lihat semua →</a>
+      </div>
+
+      <!-- ℹ️ INFO -->
+      <div>
+        <div class="footer-title">ℹ️ Informasi</div>
+        <a href="/">Home</a>
+        <a href="/about">Tentang</a>
+        <a href="/contact">Kontak</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/disclaimer">Disclaimer</a>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <a href="https://www.dmca.com/r/m23dgx1" title="DMCA.com Protection Status" class="dmca-badge">
+        <img src="https://images.dmca.com/Badges/dmca-badge-w100-5x1-01.png?ID=7ab8b020-57e8-480b-8e93-186fc3eaba14" alt="DMCA.com Protection Status" />
+      </a>
+      <br/>
+      © 2026 AI MR FERDY
+    </div>
+
+  </div>
+</footer>
