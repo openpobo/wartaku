@@ -2,39 +2,22 @@
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
+
   const posts = await getCollection('blog');
 
-  return posts.map((post) => ({
-    params: {
-      slug: post.slug
-    },
-    props: {
-      post
-    }
-  }));
+  return posts
+    .filter(post => post.slug)
+    .map((post) => ({
+      params: {
+        slug: post.slug
+      },
+      props: {
+        post
+      }
+    }));
 }
 
 const { post } = Astro.props;
-
-let content = post.body;
-
-/* convert img -> amp-img */
-
-content = content.replace(
-  /<img([^>]*?)src="([^"]+)"([^>]*?)alt="([^"]*?)"([^>]*?)>/gi,
-  `
-  <amp-img
-    src="$2"
-    alt="$4"
-    width="1200"
-    height="630"
-    layout="responsive">
-  </amp-img>
-  `
-);
-
-const canonical =
-  new URL(`/blog/${post.slug}`, Astro.site);
 ---
 
 <!doctype html>
