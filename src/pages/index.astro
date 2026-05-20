@@ -1,77 +1,24 @@
 ---
----
-import MainLayout from "../layouts/MainLayout.astro";
-import { SITE } from "../lib/site";
-import { getCollection } from "astro:content";
-
-const modules = Object.entries(
-  import.meta.glob('./tools/**/*.astro', { eager: true })
-);
-
-const tools = modules
-  .map(([file, mod]) => {
-    if (!mod.meta) return null;
-
-    const url = file
-      .replace('/src/pages', '')
-      .replace('.astro', '');
-
-    return { url, ...mod.meta };
-  })
-  .filter(Boolean);
-
-const featuredTools = tools.filter(t => t.featured).slice(0, 8);
-
-const allPosts = await getCollection("blog");
-const totalPosts = allPosts.length;
-
-const posts = allPosts
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 4);
+import MainLayout from '../layouts/MainLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import NewsCard from '../components/NewsCard.astro';
+import Sidebar from '../components/Sidebar.astro';
+import { posts } from '../content/posts';
 ---
 
-<MainLayout title="Cadobongda - Portal Berita Modern">
+<MainLayout title="Cadobongda">
 <Header />
 
-<main class="container">
+<div class="container" style="display:grid;grid-template-columns:2fr 1fr;gap:20px;">
+  <main>
+    {posts.slice(0,12).map(post => (
+      <NewsCard post={post} />
+    ))}
+  </main>
 
-<div class="breaking">
-BREAKING NEWS • AI Search Engine Mengubah Industri SEO • Crypto Market Volatility • Cloud Gaming Trending
+  <Sidebar />
 </div>
-
-<div class="layout-grid">
-
-<section>
-
-<article class="card">
-<img src={hero.image} alt={hero.title} />
-
-<div class="content">
-<div style="display:inline-block;background:#ff2d2d22;color:#ff2d2d;padding:6px 12px;border-radius:999px;">
-{hero.category}
-</div>
-
-<h1 class="hero-title">{hero.title}</h1>
-
-<p>
-Portal berita modern ultra SEO dengan performa cepat dan UX desktop ala portal profesional.
-</p>
-</div>
-</article>
-
-<div class="news-grid">
-{posts.map(post => (
-<NewsCard post={post} />
-))}
-</div>
-
-</section>
-
-<Sidebar />
-
-</div>
-
-</main>
 
 <Footer />
 </MainLayout>
