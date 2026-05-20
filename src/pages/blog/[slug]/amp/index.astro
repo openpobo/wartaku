@@ -1,0 +1,138 @@
+---
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+
+  const posts = await getCollection('blog');
+
+  return posts
+    .filter(post => post.slug)
+    .map((post) => ({
+      params: {
+        slug: post.slug
+      },
+      props: {
+        post
+      }
+    }));
+}
+
+/* ambil props */
+
+const { post } = Astro.props;
+
+/* ambil isi markdown */
+
+let content = post.body;
+
+/* convert img -> amp-img */
+
+content = content.replace(
+  /<img([^>]*?)src="([^"]+)"([^>]*?)alt="([^"]*?)"([^>]*?)>/gi,
+  `
+  <amp-img
+    src="$2"
+    alt="$4"
+    width="1200"
+    height="630"
+    layout="responsive">
+  </amp-img>
+  `
+);
+
+/* canonical */
+
+const canonical =
+  new URL(`/blog/${post.slug}`, Astro.site);
+---
+
+<!doctype html>
+
+<html amp lang="id">
+
+<head>
+
+<meta charset="utf-8" />
+
+<meta
+  name="viewport"
+  content="width=device-width,minimum-scale=1,initial-scale=1"
+/>
+
+<title>
+{post.data.title}
+</title>
+
+<meta
+  name="description"
+  content={post.data.description}
+/>
+
+<link
+  rel="canonical"
+  href={canonical}
+/>
+
+<script
+  async
+  src="https://cdn.ampproject.org/v0.js">
+</script>
+
+<style amp-boilerplate>
+body{
+  visibility:hidden
+}
+</style>
+
+<noscript>
+<style amp-boilerplate>
+body{
+  visibility:visible
+}
+</style>
+</noscript>
+
+<style amp-custom>
+
+body{
+  margin:0;
+  padding:20px;
+  background:#000;
+  color:#fff;
+  font-family:Arial;
+  line-height:1.8;
+}
+
+.container{
+  max-width:800px;
+  margin:auto;
+}
+
+h1{
+  line-height:1.4;
+}
+
+amp-img{
+  margin:20px 0;
+  border-radius:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>
+{post.data.title}
+</h1>
+
+<div set:html={content} />
+
+</div>
+
+</body>
+
+</html>
